@@ -15,30 +15,62 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactsController = void 0;
 const common_1 = require("@nestjs/common");
 const contacts_service_1 = require("./contacts.service");
+const client_1 = require("@prisma/client");
 let ContactsController = class ContactsController {
     constructor(contactsService) {
         this.contactsService = contactsService;
     }
-    getAll() {
-        return this.contactsService.getAll();
+    async getAll() {
+        return await this.contactsService.getAll();
     }
-    get(id) {
-        return this.contactsService.get(id);
+    async get(id) {
+        return await this.contactsService.get(Number(id));
+    }
+    async create(createContactInput) {
+        return await this.contactsService.create(createContactInput);
+    }
+    async update(id, updateContactInput) {
+        return await this.contactsService.update(Number(id), updateContactInput);
+    }
+    async delete(id) {
+        return await this.contactsService.delete(Number(id));
     }
 };
 __decorate([
     common_1.Get(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", Promise)
 ], ContactsController.prototype, "getAll", null);
 __decorate([
     common_1.Get('/:id'),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", Promise)
 ], ContactsController.prototype, "get", null);
+__decorate([
+    common_1.Post(),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ContactsController.prototype, "create", null);
+__decorate([
+    common_1.Put('/:id'),
+    __param(0, common_1.Param('id')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], ContactsController.prototype, "update", null);
+__decorate([
+    common_1.Delete('/:id'),
+    __param(0, common_1.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ContactsController.prototype, "delete", null);
 ContactsController = __decorate([
     common_1.Controller('contacts'),
     __metadata("design:paramtypes", [contacts_service_1.ContactsService])

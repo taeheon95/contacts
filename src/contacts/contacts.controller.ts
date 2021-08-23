@@ -22,7 +22,7 @@ export class ContactsController {
 
   @Get('/:id')
   async get(@Param('id') id): Promise<Contact> {
-    return await this.contactsService.get(id);
+    return await this.contactsService.get(Number(id));
   }
 
   @Post()
@@ -34,14 +34,14 @@ export class ContactsController {
 
   @Put('/:id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id,
     @Body() updateContactInput: Prisma.ContactUpdateInput,
   ): Promise<Contact> {
-    return await this.contactsService.update(id, updateContactInput);
+    return await this.contactsService.update(Number(id), updateContactInput);
   }
 
   @Delete('/:id')
-  async delete(@Param('id') id: number): Promise<Contact> {
-    return await this.contactsService.delete(id);
+  async delete(@Param('id') id): Promise<Contact> {
+    return await this.contactsService.delete(Number(id));
   }
 }
