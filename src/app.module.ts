@@ -1,12 +1,23 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ContactsModule } from './contacts/contacts.module';
-import { PrismaService } from './contacts/prisma/prisma.service';
+import { LoggerMiddleware } from './logger.middleware';
 
 @Module({
   imports: [ContactsModule],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: 'contacts', method: RequestMethod.POST });
+  }
+}
